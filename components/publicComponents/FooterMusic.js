@@ -11,7 +11,7 @@ const FooterMusic = observer(() => {
     const { globalPlayList, index, update } = rootStore;
     const [isPlay, setPlay] = useState(false);
     const [visible, setVisible] = useState(false);
-    const [lyrics, setLyrics] = useState([]);
+    const [lyricList, setLyricList] = useState([]);
     const audioRef = useRef();
     // 播放音乐回调
     const playMusic = () => {
@@ -37,17 +37,35 @@ const FooterMusic = observer(() => {
     // 获取歌词
     useEffect(() => {
         const getMusicLyrics = async () => {
-            const {data} = await service({
-                method:'GET',
+            const { data } = await service({
+                method: 'GET',
                 url: '/lyric',
-                params:{
+                params: {
                     id: globalPlayList[index].id
                 }
             });
-            console.log(data);
+            const { lrc } = data;
+            setLyricList(lyricFormat(lrc.lyric));
         }
         getMusicLyrics();
     }, [index])
+    // 处理歌词原始数据
+    const lyricFormat = (lyricData) => {
+        const arr = lyricData.split(/[(\r\n)\r\n]+/).map(item => {
+            let min = item.slice(1, 3);
+            let sec = item.slice(4, 6);
+            let mill = item.slice(7, 10);
+            let lyric = item.slice(11, item.length);
+            let time = parseInt(min)*60*1000 + parseInt(sec)*1000 + mill;
+            if (isNaN(Number(mill))) {
+                mill = item.slice(7, 9);
+                lyric = item.slice(10, item.length);
+            }
+            return { min, sec, mill, lyric };
+        });
+        return arr;
+    }
+    console.log(lyricList);
     return (
         <div className="footerMusic">
             <div
@@ -105,6 +123,7 @@ const FooterMusic = observer(() => {
                     curMusic={globalPlayList[index]}
                     playMusic={playMusic}
                     isPlay={isPlay}
+                    lyricList={lyricList}
                 />
             </Popup>
         </div>

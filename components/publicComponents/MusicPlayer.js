@@ -1,9 +1,11 @@
 import { singerNameFormat } from "../../public/js/util";
 import { Image } from "react-vant";
 import Marquee from "react-fast-marquee";
+import { useState } from "react";
 
-const MusicPlayer = ({ curMusic, playMusic, closePop, isPlay }) => {
-    const { id, name: songName, al: albumInfo, ar: singerInfo } = curMusic
+const MusicPlayer = ({ curMusic, playMusic, closePop, isPlay, lyricList }) => {
+    const { name: songName, al: albumInfo, ar: singerInfo } = curMusic
+    const [isLyricVisible, setLyricVisible] = useState(false);
     return (
         <div className="playerContainer">
             <Image className="bcgImg" src={albumInfo.picUrl} alt='img' />
@@ -40,11 +42,33 @@ const MusicPlayer = ({ curMusic, playMusic, closePop, isPlay }) => {
                     </svg>
                 </div>
             </div>
-            <div className="playerContent">
-                <Image className={isPlay ? 'needleImg_active' : 'needleImg'} src={'/img/needle.png'} alt='img' />
-                <Image className="cdImg" src={'/img/cd.png'} alt='img' />
-                <Image round className={`albumImg ${isPlay ? 'albumImg_active' : 'albumImg_paused'}`} src={albumInfo.picUrl} alt='img' />
-            </div>
+            {
+                isLyricVisible ? (
+                    <div
+                        className="playerLyric"
+                        onClick={() => {
+                            setLyricVisible(false);
+                        }}
+                    >
+                        {
+                            lyricList.map((item, index) => (
+                                <p key={index}>{item.lyric}</p>
+                            ))
+                        }
+                    </div>
+                ) : (
+                    <div
+                        className="playerContent"
+                        onClick={() => {
+                            setLyricVisible(true);
+                        }}
+                    >
+                        <Image className={isPlay ? 'needleImg_active' : 'needleImg'} src={'/img/needle.png'} alt='img' />
+                        <Image className="cdImg" src={'/img/cd.png'} alt='img' />
+                        <Image round className={`albumImg ${isPlay ? 'albumImg_active' : 'albumImg_paused'}`} src={albumInfo.picUrl} alt='img' />
+                    </div>
+                )
+            }
             <div className="playerFooter">
                 <div className="footerTop">
                     <svg

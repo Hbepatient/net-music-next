@@ -1,0 +1,215 @@
+// 顶部导航
+.detailTop{
+    width: 100%;
+    height: 1rem;
+    display: flex;
+    justify-content: space-between;
+    .topLeft, .topRight{
+        display: flex;
+        width: 25%;
+        height: 100%;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 .1rem;
+    }
+    .icon{
+        width: .55rem;
+        height: .55rem;
+    }
+    .topTitle{
+        font-size: .45rem;
+        color: #ffff;
+    }
+    .bgImg{
+        width: 100%;
+        height: 6rem;
+        position: fixed;
+        z-index: -1;
+        filter: blur(1.2rem);
+    }
+}
+
+// 歌单介绍
+.introduce{
+    margin-top: .2rem;
+    width: 100%;
+    display: flex;
+    .introLeft{
+        width: 40%;
+        display: flex;
+        justify-content: space-around;
+        .coverImg{
+            width: 85%;
+            height: 2.5rem;
+            img{
+                border-radius: .2rem;
+            }
+        }
+    }
+    .introRight{
+        padding: 0 .3rem;
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: .3rem;
+        .listName{
+            font-size: .32rem;
+            color: #ffff;
+            font-weight: 600;
+        }
+        .description{
+            color: rgba(211, 226, 225, 0.973);
+        }
+        span{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .userInfo{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            .userImg{
+                width: 15%;
+            }
+            .nickName{
+                color: rgb(187, 178, 178);
+                display: inline-block;
+                width: 75%;
+            }
+        }
+    }
+}
+
+// 选项工具栏
+.toolList{
+    margin: 0.4rem auto;
+    display: flex;
+    width: 90%;
+    justify-content: space-around;
+    align-items: center;
+    .toolItem{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .icon{
+            width: .6rem;
+            height: .6rem;
+            margin: .1rem 0;
+        }
+        span{
+            font-size: .36rem;
+            color: #ffff;
+        }
+    }
+}
+
+// 播放列表
+.playListContainer{
+    width: 100%;
+    background-color: #fff;
+    display: table;
+    border-radius: .36rem .36rem  0 0;
+    // 列表头部
+    .listTop{
+        width: 95%;
+        display: flex;
+        margin: .2rem auto;
+        justify-content: space-between;
+        .topLeft, .topRight{
+            display: flex;
+            align-items: center;
+            .icon{
+                margin: 0 .1rem;
+                width: .6rem;
+                height: .6rem;
+            }
+        }
+        .topLeft{
+            .playAll{
+                font-size: .36rem;
+                font-weight: bold;
+            }
+            .trackCount{
+                color: grey;
+            }
+        }
+        .topRight{
+            background-color: red;
+            padding: .24rem .15rem;
+            border-radius: .6rem;
+            color: #fff;
+            .icon{
+                fill: #fff;
+                width: .4rem;
+                height: .4rem;
+            }
+        }
+    }
+
+    .trackListItem:hover{
+        background-color: rgb(239, 225, 225);
+    }
+
+    .trackListItem{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: .2rem 0;
+        span{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+        .listLeft{
+            width: 70%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            .index{
+                text-align: center;
+                font-size: .32rem;
+                color: rgb(153, 150, 145);
+                width: .6rem;
+            }
+            .trackInfo{
+                width: 70%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: .9rem;
+                margin-left: .2rem;
+                .trackName{
+                    font-weight: 500;
+                    font-size: .32rem;
+                }
+                .singerName{
+                    color: rgb(158, 152, 152);
+                    font-size: .3rem;
+                }
+            }
+        }
+
+        .listRight{
+            display: flex;
+            justify-content: space-between;
+            .icon{
+                width: .6rem;
+                height: .6rem;
+                margin-right: .1rem;
+            }
+            .play{
+                margin-right: .25rem;
+                display: none;
+            }
+            .active{
+                display: block;
+            }
+        }
+    }
+}

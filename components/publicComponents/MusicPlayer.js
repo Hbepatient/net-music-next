@@ -1,11 +1,42 @@
 import { singerNameFormat } from "../../public/js/util";
 import { Image } from "react-vant";
 import Marquee from "react-fast-marquee";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useStore } from "../../utils/store";
+import { observer } from "mobx-react-lite";
+import { Progress } from 'react-vant';
 
-const MusicPlayer = ({ curMusic, playMusic, closePop, isPlay, lyricList }) => {
-    const { name: songName, al: albumInfo, ar: singerInfo } = curMusic
+const MusicPlayer = observer(({ curMusic, playMusic, closePop, isPlay, lyricList }) => {
+    const { rootStore } = useStore();
+    const { currentTime, index, length } = rootStore;
+    const { name: songName, al: albumInfo, ar: singerInfo } = curMusic;
     const [isLyricVisible, setLyricVisible] = useState(false);
+    // 歌词滚动
+    const lrcRef = useRef();
+    const timeCheckout = (curLyric) => {
+        if (currentTime * 1000 >= curLyric.time && currentTime * 1000 <= curLyric.after) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    useEffect(() => {
+        const p = document.querySelector('.curLyric');
+        if(p && p.offsetTop > 300){
+            lrcRef.current.scrollTop = p.offsetTop - 300;
+        }
+    }, [currentTime]);
+    // 切换歌曲
+    const switchSong = (offset) => {
+        let curIndex = index + offset;
+        if(curIndex < 0){
+            curIndex = length - 1;
+        }else if (curIndex > length - 1){
+            curIndex = 0;
+        }
+        rootStore.updateIndex(curIndex);
+        rootStore.updateCurrentTime(0);
+    }
     return (
         <div className="playerContainer">
             <Image className="bcgImg" src={albumInfo.picUrl} alt='img' />
@@ -42,33 +73,36 @@ const MusicPlayer = ({ curMusic, playMusic, closePop, isPlay, lyricList }) => {
                     </svg>
                 </div>
             </div>
-            {
-                isLyricVisible ? (
-                    <div
-                        className="playerLyric"
-                        onClick={() => {
-                            setLyricVisible(false);
-                        }}
-                    >
-                        {
-                            lyricList.map((item, index) => (
-                                <p key={index}>{item.lyric}</p>
-                            ))
-                        }
-                    </div>
-                ) : (
-                    <div
-                        className="playerContent"
-                        onClick={() => {
-                            setLyricVisible(true);
-                        }}
-                    >
-                        <Image className={isPlay ? 'needleImg_active' : 'needleImg'} src={'/img/needle.png'} alt='img' />
-                        <Image className="cdImg" src={'/img/cd.png'} alt='img' />
-                        <Image round className={`albumImg ${isPlay ? 'albumImg_active' : 'albumImg_paused'}`} src={albumInfo.picUrl} alt='img' />
-                    </div>
-                )
-            }
+            <div
+                className="playerLyric"
+                style={isLyricVisible ? { display: 'flex' } : { display: 'none' }}
+                onClick={() => {
+                    setLyricVisible(false);
+                }}
+                ref={lrcRef}
+            >
+                {
+                    lyricList.map((item, index) => (
+                        <p
+                            key={index}
+                            className={timeCheckout(item) ? 'curLyric' : ''}
+                        >
+                            {item.lyric}
+                        </p>
+                    ))
+                }
+            </div>
+            <div
+                className="playerContent"
+                style={isLyricVisible ? { display: 'none' } : { display: 'flex' }}
+                onClick={() => {
+                    setLyricVisible(true);
+                }}
+            >
+                <Image className={isPlay ? 'needleImg_active' : 'needleImg'} src={'/img/needle.png'} alt='img' />
+                <Image className="cdImg" src={'/img/cd.png'} alt='img' />
+                <Image round className={`albumImg ${isPlay ? 'albumImg_active' : 'albumImg_paused'}`} src={albumInfo.picUrl} alt='img' />
+            </div>
             <div className="playerFooter">
                 <div className="footerTop">
                     <svg
@@ -96,6 +130,9 @@ const MusicPlayer = ({ curMusic, playMusic, closePop, isPlay, lyricList }) => {
                         <use xlinkHref="#icon-liebiao-"></use>
                     </svg>
                 </div>
+                <div className="footerMiddle">
+                    <Progress percentage="50" />;
+                </div>
                 <div className="footerContent">
                     <svg
                         className="icon"
@@ -106,6 +143,7 @@ const MusicPlayer = ({ curMusic, playMusic, closePop, isPlay, lyricList }) => {
                     <svg
                         className="icon"
                         aria-hidden="true"
+                        onClick={ () => switchSong(-1)}
                     >
                         <use xlinkHref="#icon-shangyishoushangyige"></use>
                     </svg>
@@ -129,6 +167,7 @@ const MusicPlayer = ({ curMusic, playMusic, closePop, isPlay, lyricList }) => {
                     <svg
                         className="icon"
                         aria-hidden="true"
+                        onClick={() => switchSong(1)}
                     >
                         <use xlinkHref="#icon-xiayigexiayishou"></use>
                     </svg>
@@ -142,6 +181,6 @@ const MusicPlayer = ({ curMusic, playMusic, closePop, isPlay, lyricList }) => {
             </div>
         </div>
     )
-}
+})
 
 export default MusicPlayer;

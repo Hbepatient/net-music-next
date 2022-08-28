@@ -13,13 +13,16 @@ const FooterMusic = observer(() => {
     const [visible, setVisible] = useState(false);
     const [lyricList, setLyricList] = useState([]);
     const audioRef = useRef();
+    const intervalRef = useRef();
     // 播放音乐回调
     const playMusic = () => {
         if (isPlay) {
+            clearInterval(intervalRef.current);
             audioRef.current.pause();
             setPlay(false);
         } else {
             audioRef.current.play();
+            updateTime();
             setPlay(true);
         }
     };
@@ -30,6 +33,7 @@ const FooterMusic = observer(() => {
     // 自动播放
     useEffect(() => {
         audioRef.current.autoplay = true;
+        updateTime();
         if (update) {
             setPlay(true);
         }
@@ -48,7 +52,10 @@ const FooterMusic = observer(() => {
             setLyricList(lyricFormat(lrc.lyric));
         }
         getMusicLyrics();
-    }, [index])
+        return () => {
+            clearInterval(intervalRef.current);
+        }
+    }, [index, update])
     // 处理歌词原始数据
     const lyricFormat = (lyricData) => {
         const arr = lyricData.split(/[(\r\n)\r\n]+/).map(item => {
@@ -56,16 +63,28 @@ const FooterMusic = observer(() => {
             let sec = item.slice(4, 6);
             let mill = item.slice(7, 10);
             let lyric = item.slice(11, item.length);
-            let time = parseInt(min)*60*1000 + parseInt(sec)*1000 + mill;
+            let time = parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
             if (isNaN(Number(mill))) {
                 mill = item.slice(7, 9);
                 lyric = item.slice(10, item.length);
             }
-            return { min, sec, mill, lyric };
+            return { min, sec, mill, lyric, time };
+        });
+        arr.forEach((item, index) => {
+            if(index === arr.length - 1){
+                item.after = 0;
+            }else{
+                item.after = arr[index + 1].time;
+            }
         });
         return arr;
     }
-    console.log(lyricList);
+    // 持续更新播放时间
+    const updateTime = () => {
+        intervalRef.current = setInterval(() => {
+            rootStore.updateCurrentTime(audioRef.current.currentTime);
+        }, 1000) 
+    }
     return (
         <div className="footerMusic">
             <div

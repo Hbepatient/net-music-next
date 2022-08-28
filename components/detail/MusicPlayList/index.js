@@ -16,6 +16,7 @@ export default function MusicPlayList() {
     // 将歌曲列表传给global
     const playMusic = (data) => {
         rootStore.updateGlobalPlayList(data);
+        rootStore.updateCurrentTime(0);
     }
     return (
         <div className="playListContainer">

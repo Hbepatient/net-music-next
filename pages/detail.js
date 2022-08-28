@@ -2,7 +2,6 @@ import DetailTop from "../components/detail/DetailTop";
 import { handleGetAllTrackList, handleGetDetailList } from "../api/detailApi";
 import MusicPlayList from "../components/detail/MusicPlayList";
 import { addStore } from "../utils/store";
-import { Observer } from "mobx-react-lite";
 
 const createStore = (defaultData) => {
     return {
@@ -15,16 +14,10 @@ const Detail = ({ id, detailData, trackListData }) => {
     const trackListContent = trackListData.songs || {};
     addStore('detailStore', createStore({ listId: id, playListContent, trackListContent }));
     return (
-        <Observer>
-            {
-                () => (
-                    <>
-                        <DetailTop />
-                        <MusicPlayList />
-                    </>
-                )
-            }
-        </Observer>
+        <>
+            <DetailTop />
+            <MusicPlayList />
+        </>
     )
 }
 

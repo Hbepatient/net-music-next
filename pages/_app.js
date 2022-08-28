@@ -15,7 +15,15 @@ const createStore = (defaultData) => {
       this.globalPlayList = trackList;
       this.index = index;
       this.update = true;
+      this.length = trackList.length;
     },
+    updateCurrentTime(data){
+      this.currentTime = data;
+      console.log(this.currentTime);
+    },
+    updateIndex(data){
+      this.index = data;
+    }
   }
 }
 
@@ -36,7 +44,9 @@ const globalPlayListContent = {
     id: 1840459406
   }],
   index: 0,
-  update: false
+  length: 1,
+  update: false,
+  currentTime: 0,
 };
 
 function MyApp({ Component, pageProps }) {

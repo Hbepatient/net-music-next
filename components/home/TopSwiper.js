@@ -1,4 +1,5 @@
-import { Swiper, Image } from "react-vant";
+import { Swiper } from "react-vant";
+import Image from "next/image";
 
 export default function TopSwiper({ images }) {
     return (
@@ -7,7 +8,11 @@ export default function TopSwiper({ images }) {
                 {
                     images.map(image => (
                         <Swiper.Item key={image.bannerId}>
-                            <Image lazyload src={image.pic} alt='image' />
+                            <Image 
+                                src={image.pic}
+                                alt='image' 
+                                layout="fill"
+                            />
                         </Swiper.Item>
                     ))
                 }

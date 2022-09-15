@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { List } from "react-vant"
 import { handleGetAllTrackList } from "../../../api/detailApi";
-import { useStore } from "../../../utils/store";
+import { useStore } from "../../../utils/useStore";
 import ListTop from "./ListTop"
 
 export default function MusicPlayList() {
-    const { detailStore, rootStore } = useStore();
+    const { globalStore, detailStore } = useStore();
     const { listId, trackListContent } = detailStore;
     const [trackList, setTrackList] = useState(trackListContent);
     const [finished, setFinished] = useState(false);
@@ -14,9 +14,11 @@ export default function MusicPlayList() {
     }
     const [activeList, setActiveList] = useState(initActiveList());
     // 将歌曲列表传给global
-    const playMusic = (data) => {
-        rootStore.updateGlobalPlayList(data);
-        rootStore.updateCurrentTime(0);
+    const playMusic = ({trackList, index}) => {
+        globalStore.updateGlobalPlayList(trackList);
+        globalStore.updateCurrentTime(0);
+        globalStore.updateIndex(index);
+        globalStore.updateLength(trackList.length);
     }
     return (
         <div className="playListContainer">

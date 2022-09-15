@@ -207,12 +207,12 @@
         }
 
         .footerTop {
-            height: 1rem;
             width: 80%;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin: .3rem auto;
+            margin: 0 auto;
+            margin-bottom: .6rem;
         }
 
         .footerMiddle{
@@ -220,12 +220,11 @@
         }
 
         .footerContent {
-            height: 1.5rem;
             width: 100%;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin: 0 auto;
+            margin: .2rem auto;
 
             .play {
                 width: 1.2rem;

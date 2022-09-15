@@ -1,4 +1,5 @@
-import { Button, Swiper, Image } from "react-vant";
+import { Button, Swiper } from "react-vant";
+import Image from "next/image";
 import { numberFormat } from "../../public/js/util";
 import { useRouter } from "next/router";
 
@@ -29,7 +30,11 @@ export default function MusicList({ musicList }) {
                                     })
                                 }} 
                             >
-                                <Image src={music.picUrl} alt="music" />
+                                <Image 
+                                src={music.picUrl}
+                                width="100%"
+                                height={"100%"}
+                                alt="music" />
                                 <div className="playCount">
                                     <svg className="icon" aria-hidden="true">
                                         <use xlinkHref="#icon-zanting1-white"></use>

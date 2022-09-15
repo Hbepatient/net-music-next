@@ -2,7 +2,7 @@ import { Image } from "react-vant";
 import { useRouter } from "next/dist/client/router";
 import Introduce from "./Introduce";
 import { ToolItems } from "./ToolItems";
-import { useStore } from "../../../utils/store";
+import { useStore } from "../../../utils/useStore";
 
 export default function DetailTop() {
     const router = useRouter();

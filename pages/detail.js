@@ -1,18 +1,15 @@
 import DetailTop from "../components/detail/DetailTop";
 import { handleGetAllTrackList, handleGetDetailList } from "../api/detailApi";
 import MusicPlayList from "../components/detail/MusicPlayList";
-import { addStore } from "../utils/store";
-
-const createStore = (defaultData) => {
-    return {
-        ...defaultData,
-    }
-}
+import { useStore } from "../utils/useStore";
 
 const Detail = ({ id, detailData, trackListData }) => {
+    const { detailStore = {} } = useStore() || {};
     const playListContent = detailData.playlist || {};
     const trackListContent = trackListData.songs || {};
-    addStore('detailStore', createStore({ listId: id, playListContent, trackListContent }));
+    detailStore?.updatePlayListContent(playListContent);
+    detailStore?.updateTrackListContent(trackListContent);
+    detailStore?.updateListId(id);
     return (
         <>
             <DetailTop />

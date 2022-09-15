@@ -25,14 +25,15 @@
 .topSwiper {
     .rv-swiper {
         width: 100%;
-        padding: .2rem;
+        .rv-swiper__slide{
+            // margin: 0 .2rem;
+        }
 
         .rv-swiper-item {
+            width: 100%;
+            height: 3rem;
             padding: 0 .2rem;
-
             img {
-                width: 100%;
-                height: 3rem;
                 border-radius: .2rem;
             }
         }
